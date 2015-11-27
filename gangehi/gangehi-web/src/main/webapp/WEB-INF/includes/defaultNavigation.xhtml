@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+<body>
+	<ui:composition>
+		<div id="menu" class="desktop-nav">
+			<h:form>
+				<p:menubar rendered="#{! navigationController.simpleNavigation}">
+
+					<p:menuitem value="Schedule" url="/secure/schedule.jsf" icon="ui-icon-home" />
+
+					<p:submenu label="Approvals" icon="ui-icon-pencil">
+						<p:menuitem value="Simple" url="/secure/simpleWf.jsf" />
+						<p:menuitem value="Rule Based" url="/secure/wf2.jsf" disabled="true" />
+					</p:submenu>
+
+					<p:submenu label="Reports" icon="ui-icon-document">
+						<p:menuitem value="Approvals" url="#" disabled="true" />
+						<p:menuitem value="Rules" url="#" disabled="true" />
+						<p:menuitem value="User" url="#" disabled="true" />
+					</p:submenu>
+
+					<p:submenu label="Admin" icon="ui-icon-contact">
+						<p:menuitem value="User" url="/secure/admin/user.jsf" />
+						<p:menuitem value="Groups" url="#" disabled="true" />
+						<p:menuitem value="Substitutes" url="#" disabled="true" />
+						<p:menuitem value="Rules" url="#" disabled="true" />
+						<p:menuitem value="Preferences" url="#" disabled="true" />
+					</p:submenu>
+
+					<p:menuitem action="#{userBean.logout()}" value="Logout" icon="ui-icon-close" ajax="false" />
+
+					<f:facet name="options">
+						<div style="height: 29px; vertical-align: middle" class="welcome-div">
+							<h:outputText value="Welcome: #{userBean.prettyName}" />
+						</div>
+
+					</f:facet>
+				</p:menubar>
+
+				<p:menubar rendered="#{navigationController.simpleNavigation}">
+
+					<p:menuitem value="Schedule" url="/secure/schedule.jsf" icon="ui-icon-home" />
+
+					<p:menuitem value="New Approval" url="/secure/simpleWf.jsf" icon="ui-icon-pencil" />
+
+					<p:menuitem value="User Data" url="/secure/admin/user.jsf"  icon="ui-icon-contact"/>
+
+					<p:menuitem action="#{userBean.logout()}" value="Logout" icon="ui-icon-close" ajax="false" />
+
+					<f:facet name="options">
+						<div style="height: 29px; vertical-align: middle" class="welcome-div">
+							<h:outputText value="Welcome: #{userBean.prettyName}" />
+						</div>
+
+					</f:facet>
+				</p:menubar>
+
+			</h:form>
+
+		</div>
+		<div id="mobileMenu" class="mobile-nav">
+			<h:form>
+				<p:commandButton id="dynaButton" value="&#9776;" type="button" />
+
+				<p:menu toggleable="true" trigger="dynaButton" overlay="true" my="left top" at="left bottom" rendered="#{! navigationController.simpleNavigation}">
+
+					<p:submenu label="Home" icon="ui-icon-home">
+						<p:menuitem value="Schedule" url="/secure/schedule.jsf" />
+					</p:submenu>
+
+					<p:submenu label="Approvals" icon="ui-icon-pencil">
+						<p:menuitem value="Simple" url="/secure/simpleWf.jsf" />
+						<p:menuitem value="Rule Based" url="/secure/wf2.jsf" disabled="true" />
+					</p:submenu>
+
+					<p:submenu label="Reports" icon="ui-icon-document">
+						<p:menuitem value="Approvals" url="#" disabled="true" />
+						<p:menuitem value="Rules" url="#" disabled="true" />
+						<p:menuitem value="User" url="#" disabled="true" />
+					</p:submenu>
+
+					<p:submenu label="Administration" icon="ui-icon-contact">
+						<p:menuitem value="User" url="/secure/admin/user.jsf" />
+						<p:menuitem value="Groups" url="#" disabled="true" />
+						<p:menuitem value="Substitutes" url="#" disabled="true" />
+						<p:menuitem value="Rules" url="#" disabled="true" />
+						<p:menuitem value="Preferences" url="#" disabled="true" />
+					</p:submenu>
+
+					<p:menuitem action="#{userBean.logout()}" value="Logout" icon="ui-icon-close" ajax="false" />
+
+				</p:menu>
+
+				<p:menu toggleable="true" trigger="dynaButton" overlay="true" my="left top" at="left bottom" rendered="#{navigationController.simpleNavigation}">
+
+					<p:menuitem value="Schedule" url="/secure/schedule.jsf" icon="ui-icon-home"/>
+					<p:menuitem value="New Approval" url="/secure/simpleWf.jsf" icon="ui-icon-pencil" />
+					<p:menuitem value="User Data" url="/secure/admin/user.jsf"  icon="ui-icon-contact"/>
+
+					<p:menuitem action="#{userBean.logout()}" value="Logout" icon="ui-icon-close" ajax="false" />
+
+				</p:menu>
+
+			</h:form>
+
+		</div>
+	</ui:composition>
+</body>
+</html>

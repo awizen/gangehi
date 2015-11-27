@@ -1,0 +1,29 @@
+.ui-inputfield.ui-widget.ui-state-default.ui-corner-all.ui-state-disabled{
+	background-color: #E4E4E4;
+	opacity: 0.9;
+}
+
+a.ui-menuitem-link.ui-corner-all.ui-state-disabled{
+	opacity: 0.65;
+}
+
+
+.gg-dateColumn{
+	width: 120px;
+}
+
+.gg-approverColumn{
+	width: 180px;
+}
+
+.gg-workflowStateStyleGreen{
+	background-color: #c4ffc4;
+}
+
+.gg-workflowStateStyleRed{
+	background-color: #ffcccc;
+}
+
+button.ui-button.ui-widget.ui-state-default {
+	background-color: #85b2cb;
+}

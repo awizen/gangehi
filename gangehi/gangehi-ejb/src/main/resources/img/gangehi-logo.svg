@@ -1,0 +1,17 @@
+<svg width="640" height="93" viewBox="0 0 640 93" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+<!-- Created with SVG-edit - http://svg-edit.googlecode.com/ -->
+ <defs>
+  <radialGradient id="svg_8" spreadMethod="pad">
+   <stop stop-color="#db4666" offset="0"/>
+   <stop stop-color="#f8e98a" stop-opacity="0.99609" offset="0.98307"/>
+  </radialGradient>
+  <filter id="svg_5_blur">
+   <feGaussianBlur stdDeviation="0" in="SourceGraphic"/>
+  </filter>
+ </defs>
+ <g>
+  <title>Layer 1</title>
+  <path fill="url(#svg_8)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" d="m77.50333,46.50008l-15.33535,5.16649l0,-10.33284l15.33535,5.16635zm-11.13326,-25.45714l-6.98543,13.92745l-7.71244,-7.30653l14.69787,-6.62092zm-26.86875,-10.54356l5.45355,14.52773l-10.90724,0l5.45369,-14.52773zm-26.87231,10.54356l14.70154,6.62092l-7.71253,7.30653l-6.98901,-13.92745zm-11.12967,25.45714l15.33532,-5.16635l0,10.33284l-15.33532,-5.16649zm11.12967,25.45387l6.98901,-13.92394l7.71253,7.30641l-14.70154,6.61753zm26.87231,10.54669l-5.45369,-14.5276l10.90724,0l-5.45355,14.5276zm26.86875,-10.54669l-14.69787,-6.61753l7.71244,-7.30641l6.98543,13.92394zm-45.86982,-25.45387l0,0c0,-9.94136 8.50722,-18.00044 19.00107,-18.00044c10.49399,0 19.00105,8.05908 19.00105,18.00044c0,9.94123 -8.50706,18.0003 -19.00105,18.0003c-10.49385,0 -19.00107,-8.05907 -19.00107,-18.0003z" id="svg_4" stroke="#f8e98a"/>
+  <text filter="url(#svg_5_blur)" fill="#333333" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="245.45978" y="76.39072" id="svg_5" font-size="24" font-family="Sans-serif" text-anchor="middle" xml:space="preserve" font-weight="bold" transform="matrix(2.2569, 0, 0, 2.67647, -206.479, -135.794)" stroke="#919100">Gangehi Approvals</text>
+ </g>
+</svg>

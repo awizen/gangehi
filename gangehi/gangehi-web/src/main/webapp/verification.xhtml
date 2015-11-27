@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets">
+<body>
+
+	<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui" template="/WEB-INF/templates/gangehi.xhtml">
+
+		<f:metadata>
+			<f:viewParam name="verificationId" value="#{emailVerificationController.verificationId}" />
+			<f:viewParam name="email" value="#{emailVerificationController.email}" />
+			<f:event type="preRenderView" listener="#{emailVerificationController.verify}"></f:event>
+		</f:metadata>
+
+		<ui:define name="navigation">
+		</ui:define>
+
+		<ui:define name="mainContent">
+		
+			<ui:fragment rendered="#{emailVerificationController.valide}">
+				<h3>Email Verification Succeeded</h3>
+
+				<p>Your email has been successfully verified! Please proceed to the login screen.</p>
+				<p:button outcome="index" value="Login" />
+			</ui:fragment>
+
+			<ui:fragment rendered="#{! emailVerificationController.valide}">
+				<h3>Email Verification Failed</h3>
+
+				<p>There was a problem while verifying your email. Please reset your password.</p>
+				<p:button outcome="requestPasswordReset" value="reset the password" />
+			</ui:fragment>
+
+		</ui:define>
+
+	</ui:composition>
+
+</body>
+</html>

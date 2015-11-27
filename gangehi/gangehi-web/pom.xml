@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+
+   <parent>
+      <artifactId>gangehi</artifactId>
+      <groupId>com.awizen</groupId>
+      <version>0.0.1-SNAPSHOT</version>
+   </parent>
+
+   <artifactId>gangehi-web</artifactId>
+   <packaging>war</packaging>
+
+   <name>gangehi: WAR Module</name>
+
+   <url>http://wildfly.org</url>
+   <licenses>
+      <license>
+         <name>Apache License, Version 2.0</name>
+         <distribution>repo</distribution>
+         <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+      </license>
+   </licenses>
+
+   <dependencies>
+
+      <dependency>
+         <groupId>com.awizen</groupId>
+         <artifactId>gangehi-ejb</artifactId>
+         <type>ejb</type>
+         <scope>provided</scope>
+      </dependency>
+
+      <dependency>
+         <groupId>javax.enterprise</groupId>
+         <artifactId>cdi-api</artifactId>
+         <scope>provided</scope>
+      </dependency>
+      
+      <dependency>
+         <groupId>org.jboss.spec.javax.faces</groupId>
+         <artifactId>jboss-jsf-api_2.2_spec</artifactId>
+         <scope>provided</scope>
+      </dependency>
+
+       <dependency>
+       	<groupId>org.primefaces</groupId>
+       	<artifactId>primefaces</artifactId>
+       	<version>5.3</version>
+       </dependency>
+       
+       <dependency>
+       	<groupId>org.projectlombok</groupId>
+       	<artifactId>lombok</artifactId>
+       	<scope>provided</scope>
+       </dependency>
+
+       <dependency>
+       	<groupId>javax</groupId>
+       	<artifactId>javaee-web-api</artifactId>
+       	<version>7.0</version>
+       	<scope>provided</scope>
+       </dependency>
+	    <dependency>
+	    	<groupId>org.picketbox</groupId>
+	    	<artifactId>picketbox</artifactId>
+	    </dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+		</dependency>
+	    
+   </dependencies>
+
+   <build>
+      <finalName>${project.artifactId}</finalName>
+      <plugins>
+         <plugin>
+            <artifactId>maven-war-plugin</artifactId>
+            <version>${version.war.plugin}</version>
+            <configuration>
+               <failOnMissingWebXml>false</failOnMissingWebXml>
+            </configuration>
+         </plugin>
+      </plugins>
+   </build>
+
+</project>

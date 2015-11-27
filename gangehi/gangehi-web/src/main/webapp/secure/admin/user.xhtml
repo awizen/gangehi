@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/templates/gangehi.xhtml">
+
+
+	<ui:define name="mainContent">
+
+		<h:form id="userAdmin">
+			<p:growl id="msgs" />
+
+			<h3>Change User Data</h3>
+
+			<div class="ui-grid ui-grid-responsive">
+				<div class="ui-grid-row">
+					<div class="ui-grid-col-7">
+
+						<p:panel id="penel">
+
+							<h:panelGrid columns="2">
+								<p:outputLabel value="Email" for="email" />
+								<p:inputText id="email" value="#{adminUser.user.userId}" disabled="true">
+								</p:inputText>
+
+								<p:outputLabel value="First Name" for="firstName" />
+								<p:inputText id="firstName" value="#{adminUser.user.firstName}">
+									<f:validateLength maximum="40" />
+								</p:inputText>
+
+								<p:outputLabel value="Last Name" for="lastName" />
+								<p:inputText id="lastName" value="#{adminUser.user.lastName}">
+									<f:validateLength maximum="40" />
+								</p:inputText>
+
+								<p:outputLabel value="Phone" for="phone" />
+								<p:inputText id="phone" value="#{adminUser.user.telephoneNr}">
+									<f:validateLength maximum="40" />
+								</p:inputText>
+
+								<p:spacer height="1em" />
+								<p:spacer height="1em" />
+
+								<h:outputText value="Change Password: " />
+								<p:selectBooleanCheckbox value="#{adminUser.changePassword}" >
+									<p:ajax update="pwd1, pwd2"  />
+								</p:selectBooleanCheckbox>
+
+								<h:outputLabel for="pwd1" value="Password" />
+								<p:password id="pwd1" value="#{adminUser.user.passwd}" match="pwd2" label="Password" required="true" feedback="true" disabled="#{not adminUser.changePassword}" />
+
+								<h:outputLabel for="pwd2" value="Password Check" />
+								<p:password id="pwd2" value="#{adminUser.user.passwd}" label="Password Check" required="true" disabled="#{not adminUser.changePassword}"/>
+							</h:panelGrid>
+							<p:spacer height="1em" />
+
+
+							<p:commandButton id="saveBtn" value="Save" action="#{adminUser.update()}" update="msgs, penel" />
+					
+							<p:blockUI block="penel" trigger="saveBtn" />
+
+						</p:panel>
+					</div>
+					<div class="ui-grid-col-5" />
+
+				</div>
+			</div>
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>
+

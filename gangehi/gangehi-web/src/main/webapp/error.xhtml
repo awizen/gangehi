@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets">
+<body>
+
+	<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui" template="/WEB-INF/templates/gangehi.xhtml">
+
+		<ui:define name="navigation">
+		</ui:define>
+
+		<ui:define name="mainContent">
+
+			<h3>Internal Server Error</h3>
+
+			<p>An internal server error has occurred. Please proceed to the main page.</p>
+			<a href="${facesContext.externalContext.requestContextPath}/secure/schedule.xhtml">Main Page</a>
+
+			<ui:fragment rendered="#{errorHandler.development and errorHandler.statusCode != 'null'}">
+				<br />
+				<br />
+				<h:outputText value="Error Code: #{errorHandler.statusCode}" />
+				<br />
+				<h:outputText value="Error Desscription: #{errorHandler.message}" />
+				<br />
+				<h:outputText value="Exception Type: #{errorHandler.exceptionType}" />
+				<br />
+				<h:outputText value="Exception Calss: #{errorHandler.exception}" />
+				<br />
+				<h:outputText value="Request URI : #{errorHandler.requestURI}" />
+				<br />
+				<br />
+				<h:outputText value="#{errorHandler.stackTrace}" escape="false" />
+			</ui:fragment>
+
+			<ui:fragment rendered="#{errorHandler.development and errorHandler.statusCode == 'null'}">
+			
+				<h2>PrimeFaces Exception Handler</h2>
+
+				<h:outputText value="#{pfExceptionHandler.formattedStackTrace}" escape="false" />
+				<br />
+			</ui:fragment>
+
+		</ui:define>
+
+	</ui:composition>
+
+</body>
+</html>

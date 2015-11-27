@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets">
+<body>
+
+	<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui" template="/WEB-INF/templates/gangehi.xhtml">
+
+		<ui:define name="navigation">
+		</ui:define>
+
+		<ui:define name="mainContent">
+			<div class="ui-grid ui-grid-responsive">
+				<div class="ui-grid-row">
+					<div class="ui-grid-col-6">
+
+						<h:form id="loginForm" onsubmit="document.loginForm.action = 'j_security_check';">
+
+							<h3>#{msgs.login}</h3>
+
+							<p:growl id="msg" showDetail="true" life="3000" />
+
+							<p:panel id="penel">
+
+								<h:panelGrid columns="2" cellpadding="5" style="width:100%;">
+									<p:outputLabel value="#{msgs.yourEmail}" />
+									<input name="j_username" type="text" />
+
+									<p:outputLabel value="#{msgs.password}" />
+									<input name="j_password" type="password" />
+								</h:panelGrid>
+
+								<h:panelGrid cellpadding="5" style="width:100%;">
+									<p:commandButton type="submit" value="#{msgs.login}" update="msg, penel" ajax="false"/>
+								</h:panelGrid>
+
+							</p:panel>
+
+						</h:form>
+
+						<p />
+						<p:button outcome="requestPasswordReset" value="#{msgs.forgot}" />
+						<p />
+						<p id="loginOr">#{msgs.orr}</p>
+						<p />
+						<p:button outcome="register" value="#{msgs.register}" />
+					</div>
+
+					<div class="ui-grid-col-6"></div>
+
+				</div>
+			</div>
+		</ui:define>
+
+	</ui:composition>
+
+</body>
+</html>

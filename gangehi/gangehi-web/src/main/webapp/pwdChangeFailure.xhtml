@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets">
+<body>
+
+	<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui" template="/WEB-INF/templates/gangehi.xhtml">
+
+		<ui:define name="navigation">
+		</ui:define>
+
+		<ui:define name="mainContent">
+
+			<h3>Password Change Failed</h3>
+
+			<p>There was a problem while changing your password. Please try to reset your password again.</p>
+			<p:button outcome="requestPasswordReset" value="reset the password" />
+
+		</ui:define>
+
+	</ui:composition>
+
+</body>
+</html>

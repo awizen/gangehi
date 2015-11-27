@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>gangehi</artifactId>
+        <groupId>com.awizen</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>gangehi-ejb</artifactId>
+    <packaging>ejb</packaging>
+
+    <name>gangehi: EJB Module</name>
+
+    <url>http://wildfly.org</url>
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <distribution>repo</distribution>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+        </license>
+    </licenses>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.jboss.spec.javax.ejb</groupId>
+            <artifactId>jboss-ejb-api_3.2_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.enterprise</groupId>
+            <artifactId>cdi-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+       <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+		<dependency>
+			<groupId>org.jboss.spec.javax.annotation</groupId>
+			<artifactId>jboss-annotations-api_1.2_spec</artifactId>
+            <scope>provided</scope>
+		</dependency>
+
+		<dependency>
+	      <groupId>org.jbpm</groupId>
+	      <artifactId>jbpm-flow</artifactId>
+	    </dependency>
+	
+	    <dependency>
+	      <groupId>org.jbpm</groupId>
+	      <artifactId>jbpm-flow-builder</artifactId>
+	    </dependency>
+	
+	    <dependency>
+	      <groupId>org.jbpm</groupId>
+	      <artifactId>jbpm-bpmn2</artifactId>
+	    </dependency>
+	
+	    <dependency>
+	      <groupId>org.jbpm</groupId>
+	      <artifactId>jbpm-persistence-jpa</artifactId>
+	    </dependency>
+	
+	    <dependency>
+	      <groupId>org.jbpm</groupId>
+	      <artifactId>jbpm-human-task-core</artifactId>
+	    </dependency>
+
+	    <dependency>
+	    	<groupId>org.jbpm</groupId>
+	    	<artifactId>jbpm-human-task-jpa</artifactId>
+	    </dependency>
+	
+	    <dependency>
+	      <groupId>org.jbpm</groupId>
+	      <artifactId>jbpm-runtime-manager</artifactId>
+	    </dependency>
+	    
+	    <dependency>
+	      <groupId>org.jbpm</groupId>
+	      <artifactId>jbpm-services-cdi</artifactId>
+	    </dependency>
+	    
+	    <dependency>
+	      <groupId>ch.qos.logback</groupId>
+	      <artifactId>logback-classic</artifactId>
+	      <version>${logback.version}</version>
+	      <scope>test</scope>
+	    </dependency>
+	
+	    <dependency>
+	    	<groupId>org.jmockit</groupId>
+	    	<artifactId>jmockit</artifactId>
+	    	<version>1.18</version>
+	    	<scope>test</scope>
+	    </dependency>
+
+	    <dependency>
+	      <groupId>org.codehaus.btm</groupId>
+	      <artifactId>btm</artifactId>
+	      <version>${btm.version}</version>
+	      <scope>test</scope>
+	    </dependency>
+
+	    <dependency>
+	    	<groupId>org.jbpm</groupId>
+	    	<artifactId>jbpm-test</artifactId>
+	    	<scope>test</scope>
+	    </dependency>
+	    <dependency>
+	    	<groupId>com.awizen</groupId>
+	    	<artifactId>gangehi-utils</artifactId>
+	    	<version>0.0.1-SNAPSHOT</version>
+	    </dependency>
+	    <dependency>
+	    	<groupId>com.awizen</groupId>
+	    	<artifactId>gangehi-model-ejb</artifactId>
+	    	<version>0.0.1-SNAPSHOT</version>
+	    	<type>ejb</type>
+	    </dependency>
+
+	    <dependency>
+	    	<groupId>org.freemarker</groupId>
+	    	<artifactId>freemarker</artifactId>
+	    	<version>2.3.22</version>
+	    </dependency>
+	     
+	    <dependency>
+	    	<groupId>org.picketbox</groupId>
+	    	<artifactId>picketbox</artifactId>
+	    </dependency>
+	    <!-- workaround to fix maven deployment exception -->
+	    <dependency>
+	    	<groupId>org.sonatype.sisu</groupId>
+	    	<artifactId>sisu-guice</artifactId>
+	    	<version>3.2.6</version>
+	    	<classifier>no_aop</classifier>
+	    </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+        <plugins>
+            <plugin>
+                <artifactId>maven-ejb-plugin</artifactId>
+                <version>${version.ejb.plugin}</version>
+                <configuration>
+                    <ejbVersion>3.1</ejbVersion>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>${version.surefire.plugin}</version>
+                        <configuration>
+                            <skip>true</skip>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+
+            <id>arq-wildfly-remote</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.wildfly</groupId>
+                    <artifactId>wildfly-arquillian-container-remote</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+
+    </profiles>
+
+</project>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/templates/gangehi.xhtml">
+
+	<ui:define name="mainContent">
+
+		<h3 style="margin-top: 0">Task Schedule</h3>
+
+
+		<p:tabView dynamic="true" cache="true" scrollable="true">
+			<p:tab title="Open Tasks">
+				<p:dataTable var="task" value="#{scheduleController.myLazyTasksModel}" paginator="true" rows="10" paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {NextPageLink} "
+					rowsPerPageTemplate="5,10,15" id="myLazyTasksTable" lazy="true" paginatorAlwaysVisible="false" paginatorPosition="top">
+
+					<p:column headerText="Subject">
+						<h:link outcome="simpleWf.jsf">
+							<h:outputText value="#{task.subject}" />
+							<f:param name="processInstanceId" value="#{task.processInstanceId}" />
+							<f:param name="taskId" value="#{task.taskId}" />
+						</h:link>
+					</p:column>
+
+					<p:column headerText="Initiator" styleClass="gg-approverColumn" priority="3">
+						<h:outputText value="#{task.initiator}" />
+					</p:column>
+
+					<p:column headerText="Created On" styleClass="gg-dateColumn" priority="4">
+						<h:outputText value="#{task.createdOn}">
+							<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Due Date" styleClass="gg-dateColumn" priority="2">
+						<h:outputText value="#{task.dueDate}">
+							<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+						</h:outputText>
+					</p:column>
+
+				</p:dataTable>
+			</p:tab>
+
+			<p:tab title="My Open Approvals">
+
+				<p:dataTable var="ow" value="#{scheduleController.myLazyOpenWorkflowsModel}" paginator="true" rows="10" paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {NextPageLink} "
+					rowsPerPageTemplate="5,10,15" id="myLazyOpenWorkflowsTable" lazy="true" paginatorAlwaysVisible="false" paginatorPosition="top">
+
+					<p:column headerText="Subject">
+						<h:link outcome="simpleWf.jsf">
+							<h:outputText value="#{ow.subject}" />
+							<f:param name="processInstanceId" value="#{ow.processInstanceId}" />
+							<f:param name="taskId" value="#{ow.taskId}" />
+						</h:link>
+					</p:column>
+
+					<p:column headerText="Current Owner" styleClass="gg-approverColumn"  priority="2">
+						<h:outputText value="#{ow.actualOwner}" />
+					</p:column>
+
+					<p:column headerText="Created On" styleClass="gg-dateColumn" priority="4">
+						<h:outputText value="#{ow.createdOn}">
+							<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Due Date" styleClass="gg-dateColumn" priority="3">
+						<h:outputText value="#{ow.dueDate}">
+							<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+						</h:outputText>
+					</p:column>
+
+				</p:dataTable>
+			</p:tab>
+
+			<p:tab title="My Closed Approvals">
+				<p:dataTable var="ow" value="#{scheduleController.myLazyClosedWorkflowsModel}" paginator="true" rows="10" paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {NextPageLink} "
+					rowsPerPageTemplate="5,10,15" id="myLazyClosedWorkflowsTable" lazy="true" paginatorAlwaysVisible="false" paginatorPosition="top">
+
+					<p:column headerText="Subject">
+						<h:link outcome="simpleWf.jsf">
+							<h:outputText value="#{ow.subject}" />
+							<f:param name="processInstanceId" value="#{ow.processInstanceId}" />
+							<f:param name="taskId" value="" />
+						</h:link>
+					</p:column>
+
+					<p:column headerText="Created On" styleClass="gg-dateColumn"  priority="2">
+						<h:outputText value="#{ow.createdOn}">
+							<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="End Date" styleClass="gg-dateColumn"  priority="3">
+						<h:outputText value="#{ow.endDate}">
+							<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+						</h:outputText>
+					</p:column>
+
+				</p:dataTable>
+			</p:tab>
+		</p:tabView>
+
+	</ui:define>
+</ui:composition>

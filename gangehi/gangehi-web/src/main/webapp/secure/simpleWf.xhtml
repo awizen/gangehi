@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/templates/gangehi.xhtml">
+
+	<f:metadata>
+		<f:viewParam name="processInstanceId" value="#{simpleWFController.processInstanceId}" />
+		<f:viewParam name="taskId" value="#{simpleWFController.taskId}" />
+		<f:event type="preRenderView" listener="#{simpleWFController.initializeSimpleApproval}"></f:event>
+	</f:metadata>
+
+
+	<ui:define name="mainContent">
+
+		<p:growl id="msgs" autoUpdate="true" />
+
+		<p:dialog header="Give the template a name" widgetVar="templateName" modal="true">
+
+			<h:form id="templateNameFormID">
+
+				<p:inputText id="templateName" value="#{simpleWFController.templateName}" required="true">
+					<f:validateLength maximum="254" />
+				</p:inputText>
+
+				<p:commandButton value="Save" type="button" action="#{simpleWFController.saveAsTemplate()}" update="msgs" />
+				<p:commandButton value="Cancel" type="button" onclick="PF('templateName').hide();" />
+
+			</h:form>
+
+		</p:dialog>
+
+		<p:dialog id="approverListVerification" header="Approver Verification" widgetVar="approverListVerification" modal="true" resizable="false" responsive="true" closeOnEscape="true">
+
+			<p:panel id="approverListVerificationPenel">
+
+				<h:form>
+					<p>There are unregistered email addresses in the approver list:</p>
+
+					<p:dataList id="unknownApproversListID" value="#{simpleWFController.unknownApprovers}" var="unknownApprover">
+						<f:facet name="header">
+            				Unregistered Approvers
+        				</f:facet>
+        				#{unknownApprover}
+				    </p:dataList>
+
+					<p />
+					<p>Before you can start the approval process all addresses must be confirmed by the addresses owners.</p>
+					<p>As soon as you start the verification an invitation email will be sent to unregistered users.</p>
+					<p>In this email the users will be requested to confirm by clicking on an enclosed link.</p>
+					<p>It is recommended that you additionally contact those users personally to encourage them to complete the confirmation step.</p>
+					<p>You will be able to start the approval process not before all email addresses has been validated successfully.</p>
+
+
+					<p:commandButton id="startVerificationBtn" value="Start Verification" action="#{simpleWFController.startApproverListVerification}" update="msgs, approverListVerification" immediate="true" />
+					<p:commandButton value="Cancel" type="button" onclick="PF('approverListVerification').hide();" />
+
+					<p:blockUI block="approverListVerificationPenel" trigger="startVerificationBtn" />
+
+
+				</h:form>
+			</p:panel>
+		</p:dialog>
+
+		<p:dialog header="Manage Uploaded Files" widgetVar="fileList" modal="true" resizable="false">
+
+			<h:form id="fileListFormID">
+
+
+				<p:fileUpload value="#{fileListView.file}" fileUploadListener="#{fileListView.handleFileUpload}" mode="simple" label="Choose File" sizeLimit="#{fileListView.fileSizeLimit}"
+					update="fileOrderList, simpleFormID:filesViewId" partialSubmit="true" immediate="true" auto="true" invalidSizeMessage="The file size is limited to #{fileListView.fileSizeLimitMB} MB" />
+
+
+				<p:orderList id="fileOrderList" value="#{fileListView.fileList}" var="file" itemValue="#{file.id}" converter="fileListConverter" controlsLocation="none">
+					<p:ajax event="select" listener="#{fileListView.onSelect}" update="msgs" />
+
+					<p:column>
+						<h:outputText value="#{file.fileName}" />
+					</p:column>
+
+					<p:column style="width: 4%">
+						<p:commandButton id="deleteFile" icon="ui-icon-trash" actionListener="#{fileListView.deleteFile()}" update="fileOrderList, simpleFormID:filesViewId" partialSubmit="true" immediate="true" />
+					</p:column>
+				</p:orderList>
+
+				<p:commandButton value="OK" type="button" onclick="PF('fileList').hide();" />
+
+			</h:form>
+
+		</p:dialog>
+
+		<p:dialog id="approverListId" header="Approver List" widgetVar="approverList" modal="true" resizable="false">
+			<h:form id="approverListFormID">
+
+				<div class="ui-grid ui-grid-responsive">
+					<div class="ui-grid-row">
+						<div class="ui-grid-col-9">
+							<p:inputText id="nApprover" value="#{approverListView.nextApprover}" required="true" validatorMessage="Next Approver Email expected.">
+								<f:validateRegex pattern="^[ ]*[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+[ ]*$" />
+								<f:validateLength maximum="254" />
+							</p:inputText>
+						</div>
+						<div class="ui-grid-col-3">
+							<p:commandButton value="Add" action="#{approverListView.addApprover()}" update="nApprover, approverOrderList, simpleFormID:approverViewId" partialSubmit="true" />
+						</div>
+					</div>
+				</div>
+
+				<p:orderList id="approverOrderList" value="#{approverListView.approverList}" var="approver" itemValue="#{approver.id}" converter="approverListConverter" controlsLocation="left" required="true"
+					requiredMessage="Set at least one approver.">
+					<p:ajax event="select" listener="#{approverListView.onSelect}" />
+					<p:ajax event="reorder" listener="#{approverListView.onReorder}" update="simpleFormID:approverViewId" />
+
+					<p:column>
+						<h:outputText value="#{approver.approver}" />
+					</p:column>
+					<p:column style="width: 4%">
+						<p:commandButton id="deleteApprover" icon="ui-icon-trash" actionListener="#{approverListView.deleteApprover()}" update="approverOrderList, simpleFormID:approverViewId" partialSubmit="true"
+							immediate="true" />
+					</p:column>
+				</p:orderList>
+
+
+				<p:commandButton id="approverListSaveBtn" value="OK" type="button" onclick="PF('approverList').hide();" />
+			</h:form>
+
+
+		</p:dialog>
+
+		<h:panelGrid columns="4">
+			<h3>Simple Approval Workflow</h3>
+			<h:outputText value="" />
+			<h:outputText value="State: " rendered="#{dialogState.workflowStateStyleRendered}" />
+			<h:outputText value="#{simpleApproval.workflowState}" styleClass="#{dialogState.workflowStateStyle}" rendered="#{dialogState.workflowStateStyleRendered}" />
+		</h:panelGrid>
+
+		<h:form id="simpleFormID">
+			<p:messages autoUpdate="true" />
+
+
+			<div class="ui-grid ui-grid-responsive">
+				<div class="ui-grid-row">
+					<div class="ui-grid-col-7">
+
+						<h:panelGrid columns="2" cellpadding="5" style="width:100%;">
+
+							<p:outputLabel value="Subject" for="subject" />
+							<p:inputText id="subject" value="#{simpleApproval.subject}" required="true" disabled="#{dialogState.readOnly}" style="width:100%;" />
+
+						</h:panelGrid>
+					</div>
+
+					<div class="ui-grid-col-5">
+
+						<h:panelGrid columns="2" cellpadding="5" style="width:100%;">
+
+							<p:outputLabel for="datetime" value="Due Date" />
+							<p:calendar id="datetime" value="#{simpleApproval.dueDate}" pattern="dd-MM-yyyy HH:mm" required="true" disabled="#{dialogState.readOnly}" />
+
+						</h:panelGrid>
+					</div>
+				</div>
+			</div>
+
+			<h:panelGrid cellpadding="5" style="margin-top: 5px; width:100%;">
+
+				<p:outputLabel value="The description of the approval issue:" for="editorID" />
+				<p:editor id="editorID" widgetVar="editorWidget" width="350" value="#{simpleApproval.approvalText}" required="true" disabled="#{dialogState.readOnly}"
+					controls="bold italic underline size style color highlight bullets numbering undo redo cut copy paste">
+					<f:validateLength minimum="5" maximum="1000" />
+				</p:editor>
+
+			</h:panelGrid>
+
+			<div class="ui-grid ui-grid-responsive">
+				<div class="ui-grid-row">
+					<div class="ui-grid-col-6">
+						<h:panelGrid columns="1" cellpadding="5" style="width:100%;">
+
+							<p:commandButton value="Define Approver List" type="button" onclick="PF('approverList').show();" rendered="#{!dialogState.readOnly}" />
+
+							<p:dataList id="approverViewId" value="#{approverListView.approverList}" var="approver" type="ordered">
+								<f:facet name="header">
+						            Approver List
+						        </f:facet>
+						        #{approver.approver}
+						    </p:dataList>
+
+						</h:panelGrid>
+					</div>
+
+					<div class="ui-grid-col-6">
+						<h:panelGrid columns="1" cellpadding="5" style="width:100%;">
+
+							<p:commandButton value="Manage File Uploads" type="button" onclick="PF('fileList').show();" rendered="#{!dialogState.readOnly}" />
+
+							<p:dataList id="filesViewId" value="#{fileListView.fileList}" var="file">
+								<f:facet name="header">
+						           Enclosed Files
+						        </f:facet>
+								<p:commandLink value="#{file.fileName}" ajax="false">
+									<f:setPropertyActionListener target="#{fileListView.downloadFileId}" value="#{file.id}" />
+									<p:fileDownload value="#{fileListView.downloadFile}" />
+								</p:commandLink>
+							</p:dataList>
+
+						</h:panelGrid>
+					</div>
+				</div>
+			</div>
+
+			<h:panelGrid cellpadding="5" style="width:100%;" rendered="#{dialogState.commentRendered}">
+
+				<h3>Comment</h3>
+				<p:inputTextarea rows="5" cols="30" placeholder="please comment in the case of rejection" value="#{currentApprovalHistory.comment}" autoResize="false" />
+
+			</h:panelGrid>
+
+
+			<h:panelGrid style="width:100%;">
+
+				<h:panelGrid style="margin-top: 5px; width:100%;" rendered="#{dialogState.startButtonRendered}">
+					<p:commandButton value="Start Approval Workflow" oncomplete="if(args &amp;&amp; args.unregisteredApprovers)  {   PF('approverListVerification').show();  }"
+						action="#{simpleWFController.startApproval()}" style="background-color:green;" update="msgs, approverListVerification" />
+				</h:panelGrid>
+
+				<h:panelGrid style="margin-top: 5px; width:100%;" rendered="#{dialogState.startButtonRendered}">
+					<p:commandButton value="Save" action="#{simpleWFController.save()}" update="msgs" />
+				</h:panelGrid>
+
+				<h:panelGrid style="margin-top: 5px; width:100%;" rendered="#{dialogState.startButtonRendered}">
+					<p:commandButton value="Save as Template" type="button" onclick="PF('templateName').show();" disabled="true" />
+				</h:panelGrid>
+
+				<h:panelGrid style="margin-top: 5px; width:100%;" rendered="#{dialogState.deleteButtonRendered}">
+					<p:commandButton value="Delete" action="#{simpleWFController.delete()}" style="background-color:red;" update="msgs" />
+				</h:panelGrid>
+
+				<h:panelGrid style="margin-top: 5px; width:100%;" rendered="#{dialogState.approveButtonRendered}">
+					<p:commandButton value="Approve" action="#{simpleWFController.approve()}" style="background-color:green;" update="msgs" />
+				</h:panelGrid>
+
+				<h:panelGrid style="margin-top: 5px; width:100%;" rendered="#{dialogState.abortButtonRendered}">
+					<p:commandButton value="Abort" action="#{simpleWFController.abort()}" style="background-color:red;" update="msgs" />
+				</h:panelGrid>
+
+				<h:panelGrid style="margin-top: 5px; width:100%;" rendered="#{dialogState.rejectButtonRendered}">
+					<p:commandButton value="Reject" action="#{simpleWFController.reject()}" style="background-color:red;" update="msgs" />
+				</h:panelGrid>
+
+
+			</h:panelGrid>
+
+
+		</h:form>
+
+		<h:panelGrid style="width:100%;" rendered="#{dialogState.historyRendered}">
+			<h3 style="margin-top: 0">Approval History</h3>
+
+			<p:dataTable var="historyItem" value="#{approvalHistory}">
+
+				<p:column headerText="Action" style="width: 70px" priority="">
+					<h:outputText value="#{historyItem.action}" />
+				</p:column>
+
+				<p:column headerText="Created On" styleClass="gg-dateColumn" priority="5">
+					<h:outputText value="#{historyItem.createdOn}">
+						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Approved On" styleClass="gg-dateColumn" priority="4">
+					<h:outputText value="#{historyItem.createdOn}">
+						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Approver" styleClass="gg-approverColumn" priority="3">
+					<h:outputText value="#{historyItem.createdBy}" />
+				</p:column>
+
+				<p:column headerText="Comment">
+					<h:outputText value="#{historyItem.comment}" priority="2" />
+				</p:column>
+
+			</p:dataTable>
+		</h:panelGrid>
+
+	</ui:define>
+</ui:composition>
