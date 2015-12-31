@@ -328,4 +328,14 @@ public class SimpleWFService {
 		return null;
 	}
 
+	public boolean isAuthorizedToView(String currentUser, SimpleApproval simpleApproval) {
+		if (simpleApproval != null) {
+			Boolean userInvolved = approvalStepDAO.isUserInvolved(simpleApproval.getProcessInstanceId(), currentUser);
+			boolean createdByCurrentUser = simpleApproval.getCreatedBy().equalsIgnoreCase(currentUser);
+			return userInvolved || createdByCurrentUser;
+		} else {
+			return false;
+		}
+	}
+
 }

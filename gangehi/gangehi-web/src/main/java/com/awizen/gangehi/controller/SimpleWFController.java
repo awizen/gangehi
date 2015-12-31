@@ -129,73 +129,28 @@ public class SimpleWFController implements Serializable {
 	public void initializeSimpleApproval() {
 
 		boolean potentialOwner = false;
+		String currentUser = identityProvider.getName();
 
 		// initialize the controller only once per view life-cycle
 		if (!FacesContext.getCurrentInstance().isPostback()) {
 
 			if (processInstanceId != null) {
 
-				if (taskId == null) {
-					taskId = simpleWFService.findTaksId(processInstanceId);
-				}
-
-				if (taskId != null) {
-					task = simpleWFService.getTask(taskId);
-					PeopleAssignments peopleAssignments = task.getPeopleAssignments();
-					List<OrganizationalEntity> potentialOwners = peopleAssignments.getPotentialOwners();
-					for (OrganizationalEntity po : potentialOwners) {
-						String currentUser = identityProvider.getName();
-						potentialOwner = po.getId().equalsIgnoreCase(currentUser);
-					}
-				}
-
 				simpleApproval = simpleWFService.getSimpleApproval(processInstanceId);
-				List<ApprovalStep> approvalSteps = simpleApproval.getApprovalSteps();
-				for (ApprovalStep approvalStep : approvalSteps) {
-					if (approvalStep.getApprovalState().equals(ApprovalStepState.OPEN)) {
-						approverListView.getApproverList().add(approvalStep);
-					}
+
+				if (simpleWFService.isAuthorizedToView(currentUser, simpleApproval)) {
+					initForExistingProcess(potentialOwner, currentUser);
+				} else {
+					// show an empty approval page if the user is not authorized to view
+					simpleApproval = new SimpleApproval();
+					simpleApproval.setFiles(new ArrayList<FileEntity>());
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "You are not authorised to view this data!", "The comment can't be empty."));
+					log.warning("Unauthorised access to the processInstanceId: '" + processInstanceId + "' by the user '" + currentUser + "'");
 				}
 
-				List<FileEntity> files = simpleApproval.getFiles();
-				for (FileEntity fileEntity : files) {
-					fileListView.getFileList().add(fileEntity);
-				}
-
-				if (potentialOwner && taskId != null) {
-					if (task.getName().equals("create approval item")) {
-						dialogState.setDeleteButtonRendered(true);
-						dialogState.setStartButtonRendered(true);
-						dialogState.setReadOnly(false);
-						dialogState.setCommentRendered(false);
-					}
-
-					if (task.getName().equals("edit approval item")) {
-						dialogState.setApproveButtonRendered(true);
-						dialogState.setAbortButtonRendered(true);
-						dialogState.setRejectButtonRendered(false);
-						dialogState.setReadOnly(false);
-						dialogState.setCommentRendered(true);
-					}
-
-					if (task.getName().equals("next approve")) {
-						dialogState.setRejectButtonRendered(true);
-						dialogState.setApproveButtonRendered(true);
-						dialogState.setCommentRendered(true);
-					}
-				}
 
 			} else {
-				dialogState.setStartButtonRendered(true);
-				// TODO consider UTC and time zone from the browser
-				LocalDateTime localDateTime = LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT);
-				localDateTime.plusDays(DEFAULT_DUE_PERIOD);
-				Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
-				Date dueDate = Date.from(instant);
-				simpleApproval.setDueDate(dueDate);
-				dialogState.setReadOnly(false);
-				dialogState.setCommentRendered(false);
-				dialogState.setHistoryRendered(false);
+				initForNewProcess();
 			}
 			approvalHistory = simpleWFService.getApprovalHistory(simpleApproval);
 			if (approvalHistory.isEmpty()) {
@@ -203,6 +158,67 @@ public class SimpleWFController implements Serializable {
 			}
 		}
 		setWorkflowStateStyle();
+	}
+
+	private void initForNewProcess() {
+		dialogState.setStartButtonRendered(true);
+		// TODO consider UTC and time zone from the browser
+		LocalDateTime localDateTime = LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT);
+		localDateTime.plusDays(DEFAULT_DUE_PERIOD);
+		Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
+		Date dueDate = Date.from(instant);
+		simpleApproval.setDueDate(dueDate);
+		dialogState.setReadOnly(false);
+		dialogState.setCommentRendered(false);
+		dialogState.setHistoryRendered(false);
+	}
+
+	private void initForExistingProcess(boolean potentialOwner, String currentUser) {
+		if (taskId == null) {
+			taskId = simpleWFService.findTaksId(processInstanceId);
+		} else {
+			task = simpleWFService.getTask(taskId);
+			PeopleAssignments peopleAssignments = task.getPeopleAssignments();
+			List<OrganizationalEntity> potentialOwners = peopleAssignments.getPotentialOwners();
+			for (OrganizationalEntity po : potentialOwners) {
+				potentialOwner = po.getId().equalsIgnoreCase(currentUser);
+			}
+		}
+
+		List<ApprovalStep> approvalSteps = simpleApproval.getApprovalSteps();
+		for (ApprovalStep approvalStep : approvalSteps) {
+			if (approvalStep.getApprovalState().equals(ApprovalStepState.OPEN)) {
+				approverListView.getApproverList().add(approvalStep);
+			}
+		}
+
+		List<FileEntity> files = simpleApproval.getFiles();
+		for (FileEntity fileEntity : files) {
+			fileListView.getFileList().add(fileEntity);
+		}
+
+		if (potentialOwner && taskId != null) {
+			if (task.getName().equals("create approval item")) {
+				dialogState.setDeleteButtonRendered(true);
+				dialogState.setStartButtonRendered(true);
+				dialogState.setReadOnly(false);
+				dialogState.setCommentRendered(false);
+			}
+
+			if (task.getName().equals("edit approval item")) {
+				dialogState.setApproveButtonRendered(true);
+				dialogState.setAbortButtonRendered(true);
+				dialogState.setRejectButtonRendered(false);
+				dialogState.setReadOnly(false);
+				dialogState.setCommentRendered(true);
+			}
+
+			if (task.getName().equals("next approve")) {
+				dialogState.setRejectButtonRendered(true);
+				dialogState.setApproveButtonRendered(true);
+				dialogState.setCommentRendered(true);
+			}
+		}
 	}
 
 	private void setWorkflowStateStyle() {
