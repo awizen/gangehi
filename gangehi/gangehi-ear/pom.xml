@@ -40,6 +40,13 @@
         	<version>1.6.1</version>
         	<scope>provided</scope>
         </dependency>
+        
+	 	<dependency>
+  			<groupId>com.google.inject.extensions</groupId>
+  			<artifactId>guice-servlet</artifactId>
+  			<version>4.1.0</version>
+		</dependency>   
+        
     </dependencies>
 
     <build>

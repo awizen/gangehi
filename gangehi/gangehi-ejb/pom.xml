@@ -142,13 +142,7 @@
 	    	<groupId>org.picketbox</groupId>
 	    	<artifactId>picketbox</artifactId>
 	    </dependency>
-	    <!-- workaround to fix maven deployment exception -->
-	    <dependency>
-	    	<groupId>org.sonatype.sisu</groupId>
-	    	<artifactId>sisu-guice</artifactId>
-	    	<version>3.2.6</version>
-	    	<classifier>no_aop</classifier>
-	    </dependency>
+
     </dependencies>
 
     <build>
