@@ -4,7 +4,7 @@ Gangehi is an open source web application which helps you to organise and to con
 For more information please refer to the wiki page under:
 https://github.com/awizen/gangehi/wiki
 
-###Features of the Gangehi Prototype 
+### Features of the Gangehi Prototype 
  * Registration (email verification, login, password recovery) 
  * Definition of flexible approval workflows 
  * Workflow control based on jBPM 
