@@ -1,7 +1,7 @@
 package com.awizen.gangehi.model;
 
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -94,11 +94,11 @@ public class SimpleApproval extends AuditableAbstractEntity{
 
 	@OneToMany(fetch=FetchType.EAGER, orphanRemoval=true, cascade=CascadeType.ALL)
 	@OrderBy("rank ASC")
-	private List<ApprovalStep> approvalSteps;
+	private Set<ApprovalStep> approvalSteps;
 
 	@OneToMany(fetch=FetchType.EAGER, orphanRemoval=true, cascade=CascadeType.ALL)
 	@OrderBy("fileName ASC")
-	private List<FileEntity> files;
+	private Set<FileEntity> files;
 
 	@NotNull
 	@Convert(converter = WorkflowStateConverter.class)

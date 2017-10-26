@@ -8,7 +8,9 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -115,7 +117,7 @@ public class SimpleWFController implements Serializable {
 	@PostConstruct
 	private void initialize() {
 		simpleApproval = new SimpleApproval();
-		simpleApproval.setFiles(new ArrayList<FileEntity>());
+		simpleApproval.setFiles(new HashSet<FileEntity>());
 
 		dialogState = new SimpleApprovalDialogState();
 	}
@@ -143,7 +145,7 @@ public class SimpleWFController implements Serializable {
 				} else {
 					// show an empty approval page if the user is not authorized to view
 					simpleApproval = new SimpleApproval();
-					simpleApproval.setFiles(new ArrayList<FileEntity>());
+					simpleApproval.setFiles(new HashSet<FileEntity>());
 					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "You are not authorised to view this data!", "The comment can't be empty."));
 					log.warning("Unauthorised access to the processInstanceId: '" + processInstanceId + "' by the user '" + currentUser + "'");
 				}
@@ -185,14 +187,14 @@ public class SimpleWFController implements Serializable {
 			}
 		}
 
-		List<ApprovalStep> approvalSteps = simpleApproval.getApprovalSteps();
+		Set<ApprovalStep> approvalSteps = simpleApproval.getApprovalSteps();
 		for (ApprovalStep approvalStep : approvalSteps) {
 			if (approvalStep.getApprovalState().equals(ApprovalStepState.OPEN)) {
 				approverListView.getApproverList().add(approvalStep);
 			}
 		}
 
-		List<FileEntity> files = simpleApproval.getFiles();
+		Set<FileEntity> files = simpleApproval.getFiles();
 		for (FileEntity fileEntity : files) {
 			fileListView.getFileList().add(fileEntity);
 		}

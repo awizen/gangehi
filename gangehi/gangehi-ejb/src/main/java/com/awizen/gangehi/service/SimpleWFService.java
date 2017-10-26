@@ -96,7 +96,7 @@ public class SimpleWFService {
 
 	private ApprovalStep determineNextApprovalStep(SimpleApproval simpleApproval) {
 		ApprovalStep nextApprovalStep = null;
-		List<ApprovalStep> approvalSteps = simpleApproval.getApprovalSteps();
+		Set<ApprovalStep> approvalSteps = simpleApproval.getApprovalSteps();
 		int lowestRank = Integer.MAX_VALUE;
 		for (ApprovalStep approvalStep : approvalSteps) {
 
@@ -121,7 +121,7 @@ public class SimpleWFService {
 	}
 
 	private void resetApprovalSteps(SimpleApproval simpleApproval) {
-		List<ApprovalStep> approvalSteps = simpleApproval.getApprovalSteps();
+		Set<ApprovalStep> approvalSteps = simpleApproval.getApprovalSteps();
 		for (ApprovalStep approvalStep : approvalSteps) {
 			if (!ApprovalStepState.OPEN.equals(approvalStep.getApprovalState())) {
 				approvalStep.setApprovalState(ApprovalStepState.OPEN);
@@ -261,7 +261,7 @@ public class SimpleWFService {
 	}
 
 	private void refreschApprovalPlan(SimpleApproval simpleApproval, List<ApprovalStep> approverList) {
-		ArrayList<ApprovalStep> approvalSteps = new ArrayList<ApprovalStep>();
+		Set<ApprovalStep> approvalSteps = new HashSet<>();
 		for (ApprovalStep approvalStep : approverList) {
 			if (approvalStep.getId() == null || approvalStep.getId() < 0) {
 				approvalStep.setId(null);
@@ -289,7 +289,7 @@ public class SimpleWFService {
 		}
 
 		// a loop to delete removed files
-		List<FileEntity> persistentFiles = simpleApproval.getFiles();
+		Set<FileEntity> persistentFiles = simpleApproval.getFiles();
 		Iterator<FileEntity> persistentFilesIterator = persistentFiles.iterator();
 		while (persistentFilesIterator.hasNext()) {
 			FileEntity fileEntity = persistentFilesIterator.next();

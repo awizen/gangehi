@@ -28,7 +28,7 @@
 
         <version.wildfly.maven.plugin>1.2.0.Final</version.wildfly.maven.plugin>
 
-        <version.jboss.bom>9.0.1.Final</version.jboss.bom>
+        <version.jboss.bom>11.0.0.Final</version.jboss.bom>
 
 
         <version.compiler.plugin>3.7.0</version.compiler.plugin>
@@ -100,7 +100,7 @@
 
 			<dependency> 
 			    <groupId>org.wildfly.bom</groupId>
-			    <artifactId>jboss-javaee-7.0-wildfly</artifactId>
+			    <artifactId>wildfly-javaee7-with-tools</artifactId>
 				<version>${version.jboss.bom}</version>
 			    <type>pom</type> 
 			    <scope>import</scope> 

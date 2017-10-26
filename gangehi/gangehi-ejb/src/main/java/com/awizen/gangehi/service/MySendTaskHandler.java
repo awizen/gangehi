@@ -102,7 +102,7 @@ public class MySendTaskHandler implements WorkItemHandler {
 			// no break after this case!
 
 		case ABORTED_NOTIFICATION:
-			List<ApprovalStep> approvalSteps = approval.getApprovalSteps();
+			Set<ApprovalStep> approvalSteps = approval.getApprovalSteps();
 			for (ApprovalStep approvalStep : approvalSteps) {
 				// TODO: restrict toSet only to users who really were involved
 				// in the approval process: try to use approval history
