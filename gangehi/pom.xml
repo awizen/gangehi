@@ -128,7 +128,7 @@
 				<scope>import</scope>
 			</dependency>
 		
-			<!-- define drools BOM -->
+			<!-- define jbpm BOM -->
 			<dependency>
 				<groupId>org.jbpm</groupId>
 				<artifactId>jbpm-bom</artifactId>
