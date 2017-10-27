@@ -57,6 +57,9 @@
     <class>org.jbpm.kie.services.impl.store.DeploymentStoreEntry</class>
     <class>org.jbpm.kie.services.impl.query.persistence.QueryDefinitionEntity</class>
 
+	<!-- error handling -->
+    <class>org.jbpm.runtime.manager.impl.jpa.ExecutionErrorInfo</class>
+
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
 		<properties>

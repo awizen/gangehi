@@ -9,9 +9,9 @@ import org.kie.api.task.UserGroupCallback;
 
 @ApplicationScoped
 public class MyUserGroupCallback implements UserGroupCallback {
-
+	
 	@Override
-	public List<String> getGroupsForUser(String userId, List<String> groupIds, List<String> allExistingGroupIds) {
+	public List<String> getGroupsForUser(String userId) {
 		List<String> groups = new ArrayList<String>();
 		groups.add("myGroup");
 		return groups;
